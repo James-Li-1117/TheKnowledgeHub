@@ -61,6 +61,7 @@ model User {
   chapterProgress     ChapterProgress[]
   userAchievements    UserAchievement[]
   progressSnapshots   ProgressSnapshot[]
+  mindMapNodes        MindMapNode[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -74,9 +75,10 @@ model Course {
   accentColor String @default("#22c55e")
   sortOrder   Int    @default(0)
 
-  chapters  Chapter[]
-  notes     Note[]
-  studyLogs StudyLog[]
+  chapters     Chapter[]
+  notes        Note[]
+  studyLogs    StudyLog[]
+  mindMapNodes MindMapNode[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -121,12 +123,44 @@ model Note {
   mimeType String?
   tags     String[]
 
+  mindMapNode MindMapNode?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([authorId])
   @@index([courseId])
   @@index([chapterId])
+}
+
+/// Per-user course mind map: course title as conceptual root; `isRoot` marks the single anchor node per (course, user).
+model MindMapNode {
+  id       String @id @default(cuid())
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  title  String
+  x      Float @default(0)
+  y      Float @default(0)
+  isRoot Boolean @default(false)
+
+  parentId String?
+  parent   MindMapNode?  @relation("MindMapTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children MindMapNode[] @relation("MindMapTree")
+
+  linkedNoteId String? @unique
+  linkedNote   Note?   @relation(fields: [linkedNoteId], references: [id], onDelete: SetNull)
+
+  previewImageUrl String?
+  previewText     String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId, authorId])
+  @@index([parentId])
 }
 
 model StudyLog {

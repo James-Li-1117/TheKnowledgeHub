@@ -33,22 +33,22 @@ export function StudyLogForm({ courses }: { courses: CourseLite[] }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="max-w-md space-y-4 rounded-2xl border border-white/10 bg-slate-900/50 p-6">
+    <form onSubmit={onSubmit} className="max-w-md space-y-4 rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm">
       <div>
-        <label className="text-xs text-slate-400">学习分钟</label>
+        <label className="text-xs text-slate-500">学习分钟</label>
         <input
           type="number"
           min={1}
           max={600}
-          className="mt-1 w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-800"
           value={minutes}
           onChange={(e) => setMinutes(Number(e.target.value))}
         />
       </div>
       <div>
-        <label className="text-xs text-slate-400">关联课程（可选）</label>
+        <label className="text-xs text-slate-500">关联课程（可选）</label>
         <select
-          className="mt-1 w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-800"
           value={courseId}
           onChange={(e) => setCourseId(e.target.value)}
         >
@@ -61,18 +61,18 @@ export function StudyLogForm({ courses }: { courses: CourseLite[] }) {
         </select>
       </div>
       <div>
-        <label className="text-xs text-slate-400">备注</label>
+        <label className="text-xs text-slate-500">备注</label>
         <input
-          className="mt-1 w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-white"
+          className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-800"
           value={note}
           onChange={(e) => setNote(e.target.value)}
         />
       </div>
-      {msg && <p className="text-sm text-emerald-300">{msg}</p>}
+      {msg && <p className="text-sm font-medium text-emerald-700">{msg}</p>}
       <button
         type="submit"
         disabled={loading}
-        className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+        className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-600 disabled:opacity-50"
       >
         {loading ? "提交中…" : "打卡"}
       </button>

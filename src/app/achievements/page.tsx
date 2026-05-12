@@ -15,20 +15,20 @@ export default async function AchievementsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">成就</h1>
+      <h1 className="text-2xl font-bold text-slate-900">成就</h1>
       <div className="grid gap-4 sm:grid-cols-2">
         {achievements.map((a) => {
           const ok = earnedSet.has(a.id);
           return (
             <div
               key={a.id}
-              className={`rounded-2xl border p-5 ${
-                ok ? "border-emerald-500/50 bg-emerald-950/30" : "border-white/10 bg-slate-900/40"
+              className={`rounded-2xl border p-5 shadow-sm ${
+                ok ? "border-emerald-200 bg-emerald-50/90" : "border-slate-200 bg-white/95"
               }`}
             >
               <p className="text-xs uppercase tracking-wide text-slate-500">{a.key}</p>
-              <h2 className="mt-1 text-lg font-semibold text-white">{a.title}</h2>
-              {a.description && <p className="mt-2 text-sm text-slate-400">{a.description}</p>}
+              <h2 className="mt-1 text-lg font-semibold text-slate-900">{a.title}</h2>
+              {a.description && <p className="mt-2 text-sm text-slate-600">{a.description}</p>}
               <p className="mt-3 text-xs text-slate-500">
                 {ok ? `已获得 · ${earnedAt[a.id]?.toLocaleString()}` : "尚未解锁"}
               </p>

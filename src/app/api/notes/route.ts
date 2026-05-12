@@ -2,9 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
-import { createSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase";
-import { computeChapterMasteryValue, recomputeChapterMastery } from "@/lib/progress";
-import { evaluateAchievements } from "@/lib/achievements";
+import { createNoteWithUpload } from "@/lib/notes/createNote";
 
 export async function GET() {
   const session = await auth();
@@ -29,9 +27,7 @@ export async function POST(req: Request) {
   let chapterId: string | null = null;
   let content: string | null = null;
   let tags: string[] = [];
-  let fileUrl: string | null = null;
-  let fileName: string | null = null;
-  let mimeType: string | null = null;
+  let filePart: { buffer: Buffer; fileName: string; mimeType: string; size: number } | null = null;
 
   if (contentType.includes("multipart/form-data")) {
     const form = await req.formData();
@@ -44,26 +40,16 @@ export async function POST(req: Request) {
     tags = tagsRaw ? tagsRaw.split(",").map((t) => t.trim()).filter(Boolean) : [];
     const file = form.get("file");
     if (file instanceof File && file.size > 0) {
-      fileName = file.name;
-      mimeType = file.type || "application/octet-stream";
-      const buf = Buffer.from(await file.arrayBuffer());
       if (file.size > 12 * 1024 * 1024) {
         return NextResponse.json({ error: "File too large (max 12MB)" }, { status: 400 });
       }
-      if (isSupabaseConfigured()) {
-        const admin = createSupabaseAdmin();
-        const bucket = process.env.SUPABASE_STORAGE_BUCKET || "notes";
-        const path = `${session.user.id}/${Date.now()}_${file.name.replace(/[^\w.\-]+/g, "_")}`;
-        const { error } = await admin!.storage.from(bucket).upload(path, buf, {
-          contentType: mimeType,
-          upsert: false,
-        });
-        if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-        const { data: pub } = admin!.storage.from(bucket).getPublicUrl(path);
-        fileUrl = pub.publicUrl;
-      } else {
-        fileUrl = `local:${fileName}`;
-      }
+      const buf = Buffer.from(await file.arrayBuffer());
+      filePart = {
+        buffer: buf,
+        fileName: file.name,
+        mimeType: file.type || "application/octet-stream",
+        size: file.size,
+      };
     }
   } else {
     const json = await req.json();
@@ -84,70 +70,19 @@ export async function POST(req: Request) {
     tags = parsed.data.tags ?? [];
   }
 
-  if (!title || !courseId) {
-    return NextResponse.json({ error: "title and courseId required" }, { status: 400 });
-  }
-
-  const course = await prisma.course.findUnique({ where: { id: courseId } });
-  if (!course) return NextResponse.json({ error: "Course not found" }, { status: 404 });
-
-  if (chapterId) {
-    const ch = await prisma.chapter.findFirst({ where: { id: chapterId, courseId } });
-    if (!ch) return NextResponse.json({ error: "Chapter not found" }, { status: 404 });
-  }
-
-  let beforeMastery: number | null = null;
-  if (chapterId) {
-    const progressRow = await prisma.chapterProgress.findUnique({
-      where: { userId_chapterId: { userId: session.user.id, chapterId } },
-    });
-    const noteCountBefore = await prisma.note.count({
-      where: { authorId: session.user.id, chapterId },
-    });
-    beforeMastery = computeChapterMasteryValue(progressRow?.completed, noteCountBefore);
-  }
-
-  const note = await prisma.note.create({
-    data: {
-      authorId: session.user.id,
-      courseId,
-      chapterId,
-      title,
-      content,
-      tags,
-      fileUrl,
-      fileName,
-      mimeType,
-    },
+  const result = await createNoteWithUpload({
+    authorId: session.user.id,
+    courseId,
+    chapterId,
+    title,
+    content,
+    tags,
+    file: filePart,
   });
 
-  let afterMastery: number | null = null;
-  if (chapterId) {
-    afterMastery = await recomputeChapterMastery(session.user.id, chapterId);
-  }
-  const { newlyUnlocked } = await evaluateAchievements(session.user.id);
-
-  let newlyUnlockedAchievements: { key: string; title: string }[] = [];
-  if (newlyUnlocked.length > 0) {
-    const rows = await prisma.achievement.findMany({
-      where: { key: { in: newlyUnlocked } },
-      select: { key: true, title: true },
-    });
-    newlyUnlockedAchievements = rows.map((a) => ({ key: a.key, title: a.title }));
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
   }
 
-  const uploadSummary = {
-    noteId: note.id,
-    chapterProgress:
-      chapterId && beforeMastery !== null && afterMastery !== null
-        ? {
-            beforeMastery,
-            afterMastery,
-            delta: afterMastery - beforeMastery,
-          }
-        : null,
-    newlyUnlockedAchievements,
-  };
-
-  return NextResponse.json({ note, uploadSummary });
+  return NextResponse.json({ note: result.data.note, uploadSummary: result.data.uploadSummary });
 }

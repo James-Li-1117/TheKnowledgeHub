@@ -33,8 +33,8 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">仪表盘</h1>
-        <p className="text-slate-400">欢迎，{session.user.name || session.user.email}</p>
+        <h1 className="text-2xl font-bold text-slate-900">仪表盘</h1>
+        <p className="text-slate-600">欢迎，{session.user.name || session.user.email}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -44,37 +44,40 @@ export default async function DashboardPage() {
       </div>
 
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-white">你的知识树</h2>
+        <h2 className="mb-3 text-lg font-semibold text-slate-900">你的知识树</h2>
         <GlobalKnowledgeTreeDynamic courses={stats} />
       </section>
 
       <div className="flex flex-wrap gap-3">
         <Link
           href="/courses"
-          className="rounded-xl border border-white/15 px-4 py-2 text-sm text-white hover:bg-white/10"
+          className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 shadow-sm hover:bg-slate-50"
         >
           浏览课程
         </Link>
-        <Link href="/notes/new" className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white">
+        <Link
+          href="/notes/new"
+          className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-emerald-600"
+        >
           上传笔记
         </Link>
         <Link
           href="/study"
-          className="rounded-xl border border-white/15 px-4 py-2 text-sm text-white hover:bg-white/10"
+          className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 shadow-sm hover:bg-slate-50"
         >
           学习打卡
         </Link>
         <form action={saveProgressSnapshotAction}>
           <button
             type="submit"
-            className="rounded-xl border border-white/15 px-4 py-2 text-sm text-white hover:bg-white/10"
+            className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 shadow-sm hover:bg-slate-50"
           >
             保存进度快照
           </button>
         </form>
         <a
           href="/api/report"
-          className="inline-block rounded-xl border border-emerald-500/40 px-4 py-2 text-sm text-emerald-200 hover:bg-emerald-500/10"
+          className="inline-block rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-800 hover:bg-emerald-100"
         >
           导出学习报告 JSON
         </a>
@@ -85,9 +88,9 @@ export default async function DashboardPage() {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-slate-900/50 p-4">
-      <p className="text-xs uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-1 text-2xl font-semibold text-white">{value}</p>
+    <div className="rounded-2xl border border-slate-100 bg-white/95 p-4 shadow-sm">
+      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
+      <p className="mt-1 text-2xl font-semibold text-slate-900">{value}</p>
     </div>
   );
 }

@@ -21,15 +21,18 @@ export default async function StudyPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">学习打卡</h1>
-        <p className="text-sm text-slate-400">累计分钟用于成就「Forest friend」等。</p>
+        <h1 className="text-2xl font-bold text-slate-900">学习打卡</h1>
+        <p className="text-sm text-slate-600">累计分钟用于成就「Forest friend」等。</p>
       </div>
       <StudyLogForm courses={courses} />
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-white">最近记录</h2>
-        <ul className="space-y-2 text-sm text-slate-300">
+        <h2 className="mb-3 text-lg font-semibold text-slate-900">最近记录</h2>
+        <ul className="space-y-2 text-sm text-slate-700">
           {recent.map((r) => (
-            <li key={r.id} className="flex justify-between rounded-lg border border-white/5 bg-slate-900/40 px-3 py-2">
+            <li
+              key={r.id}
+              className="flex justify-between rounded-xl border border-slate-200 bg-white/90 px-3 py-2 shadow-sm"
+            >
               <span>
                 {r.studiedAt.toLocaleString()} · {r.minutes} 分钟
                 {r.course ? ` · ${r.course.code}` : ""}

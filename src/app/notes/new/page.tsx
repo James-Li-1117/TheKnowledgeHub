@@ -18,7 +18,7 @@ export default async function NewNotePage({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">上传笔记</h1>
+      <h1 className="text-2xl font-bold text-slate-900">上传笔记</h1>
       <NewNoteForm courses={courses} initialCourseId={sp.courseId} initialChapterId={sp.chapterId} />
     </div>
   );

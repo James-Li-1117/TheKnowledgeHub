@@ -235,6 +235,7 @@ async function main() {
   await prisma.progressSnapshot.deleteMany();
   await prisma.chapterProgress.deleteMany();
   await prisma.studyLog.deleteMany();
+  await prisma.mindMapNode.deleteMany();
   await prisma.note.deleteMany();
   await prisma.chapter.deleteMany();
   await prisma.course.deleteMany();

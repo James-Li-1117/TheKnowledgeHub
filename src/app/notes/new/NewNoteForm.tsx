@@ -177,7 +177,7 @@ export function NewNoteForm({
 
   return (
     <div className="max-w-xl space-y-4">
-      <ol className="flex flex-wrap gap-2 rounded-2xl border border-white/10 bg-slate-950/50 p-3 text-[11px]">
+      <ol className="flex flex-wrap gap-2 rounded-2xl border border-slate-200 bg-white/90 p-3 text-[11px] shadow-sm">
         {STEP_LABELS.map((label, i) => {
           const noFileSkip = !hasFile && i === 1;
           let variant: "todo" | "active" | "done" | "skip" = "todo";
@@ -194,12 +194,12 @@ export function NewNoteForm({
               key={label}
               className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 ${
                 variant === "done"
-                  ? "bg-emerald-500/20 text-emerald-200"
+                  ? "bg-emerald-100 text-emerald-800"
                   : variant === "active"
-                    ? "bg-white/15 text-white"
+                    ? "bg-pink-100 text-pink-800"
                     : variant === "skip"
-                      ? "border border-dashed border-slate-600 bg-slate-900/60 text-slate-500"
-                      : "bg-black/30 text-slate-500"
+                      ? "border border-dashed border-slate-300 bg-slate-50 text-slate-500"
+                      : "bg-slate-100 text-slate-500"
               }`}
             >
               <span className="font-mono opacity-70">{i + 1}</span>
@@ -210,11 +210,11 @@ export function NewNoteForm({
         })}
       </ol>
 
-      <form onSubmit={onSubmit} className="space-y-4 rounded-2xl border border-white/10 bg-slate-900/50 p-6">
+      <form onSubmit={onSubmit} className="space-y-4 rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm">
         <div>
-          <label className="text-xs text-slate-400">课程</label>
+          <label className="text-xs text-slate-500">课程</label>
           <select
-            className="mt-1 w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-white disabled:opacity-50"
+            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-800 disabled:opacity-50"
             value={courseId}
             disabled={loading || submitStage === "success"}
             onChange={(e) => {
@@ -230,9 +230,9 @@ export function NewNoteForm({
           </select>
         </div>
         <div>
-          <label className="text-xs text-slate-400">章节（可选）</label>
+          <label className="text-xs text-slate-500">章节（可选）</label>
           <select
-            className="mt-1 w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-white disabled:opacity-50"
+            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-800 disabled:opacity-50"
             value={chapterId}
             disabled={loading || submitStage === "success"}
             onChange={(e) => setChapterId(e.target.value)}
@@ -245,15 +245,15 @@ export function NewNoteForm({
             ))}
           </select>
           {!chapterId ? (
-            <p className="mt-1.5 text-xs text-amber-200/80">
+            <p className="mt-1.5 text-xs text-amber-700">
               未选章节时笔记仍会保存，但不会更新章节掌握度。
             </p>
           ) : null}
         </div>
         <div>
-          <label className="text-xs text-slate-400">标题</label>
+          <label className="text-xs text-slate-500">标题</label>
           <input
-            className="mt-1 w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-white disabled:opacity-50"
+            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-800 disabled:opacity-50"
             value={title}
             disabled={loading || submitStage === "success"}
             onChange={(e) => setTitle(e.target.value)}
@@ -261,28 +261,28 @@ export function NewNoteForm({
           />
         </div>
         <div>
-          <label className="text-xs text-slate-400">内容（Markdown 纯文本）</label>
+          <label className="text-xs text-slate-500">内容（Markdown 纯文本）</label>
           <textarea
-            className="mt-1 min-h-[140px] w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-white disabled:opacity-50"
+            className="mt-1 min-h-[140px] w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-800 disabled:opacity-50"
             value={content}
             disabled={loading || submitStage === "success"}
             onChange={(e) => setContent(e.target.value)}
           />
         </div>
         <div>
-          <label className="text-xs text-slate-400">标签（逗号分隔）</label>
+          <label className="text-xs text-slate-500">标签（逗号分隔）</label>
           <input
-            className="mt-1 w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-white disabled:opacity-50"
+            className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-800 disabled:opacity-50"
             value={tags}
             disabled={loading || submitStage === "success"}
             onChange={(e) => setTags(e.target.value)}
           />
         </div>
         <div>
-          <label className="text-xs text-slate-400">附件（≤12MB，配置 Supabase 后上传云端）</label>
+          <label className="text-xs text-slate-500">附件（≤12MB，配置 Supabase 后上传云端）</label>
           <input
             type="file"
-            className="mt-1 w-full text-sm text-slate-300 disabled:opacity-50"
+            className="mt-1 w-full text-sm text-slate-600 disabled:opacity-50"
             disabled={loading || submitStage === "success"}
             onChange={(e) => {
               const f = e.target.files?.[0] ?? null;
@@ -297,14 +297,14 @@ export function NewNoteForm({
         </div>
 
         {(submitStage === "upload" || submitStage === "save") && hasFile ? (
-          <div className="rounded-xl border border-white/10 bg-black/30 p-3">
-            <div className="flex justify-between text-xs text-slate-400">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+            <div className="flex justify-between text-xs text-slate-500">
               <span>{submitStage === "upload" ? "正在上传附件…" : "服务器正在保存…"}</span>
               {submitStage === "upload" && uploadPercent > 0 ? <span>{uploadPercent}%</span> : null}
             </div>
-            <div className="mt-2 h-2 overflow-hidden rounded-full bg-black/40">
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-200">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-emerald-600 to-emerald-300 transition-all duration-150"
+                className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-emerald-300 transition-all duration-150"
                 style={{
                   width:
                     submitStage === "save" ? "100%" : uploadPercent > 0 ? `${uploadPercent}%` : "8%",
@@ -315,22 +315,22 @@ export function NewNoteForm({
         ) : null}
 
         {submitStage === "save" && !hasFile ? (
-          <div className="rounded-xl border border-white/10 bg-black/30 p-3 text-xs text-slate-400">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
             正在保存笔记…
           </div>
         ) : null}
 
-        {error && <p className="text-sm text-red-400">{error}</p>}
+        {error && <p className="text-sm text-rose-600">{error}</p>}
 
         {successSummary && submitStage === "success" ? (
-          <div className="space-y-2 rounded-xl border border-emerald-500/40 bg-emerald-950/40 p-4 text-sm text-emerald-50">
-            <p className="font-semibold text-emerald-200">保存成功</p>
+          <div className="space-y-2 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950">
+            <p className="font-semibold text-emerald-800">保存成功</p>
             {successSummary.chapterProgress ? (
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-slate-600">
                 章节掌握度：{Math.round(successSummary.chapterProgress.beforeMastery * 100)}% →{" "}
                 {Math.round(successSummary.chapterProgress.afterMastery * 100)}%
                 {successSummary.chapterProgress.delta !== 0 ? (
-                  <span className="text-emerald-300">
+                  <span className="text-emerald-700">
                     {" "}
                     （{successSummary.chapterProgress.delta > 0 ? "+" : ""}
                     {Math.round(successSummary.chapterProgress.delta * 100)}%）
@@ -338,12 +338,12 @@ export function NewNoteForm({
                 ) : null}
               </p>
             ) : (
-              <p className="text-xs text-slate-400">本次未绑定章节，掌握度未更新。</p>
+              <p className="text-xs text-slate-600">本次未绑定章节，掌握度未更新。</p>
             )}
             {successSummary.newlyUnlockedAchievements.length > 0 ? (
               <div>
-                <p className="text-xs font-medium text-emerald-200/90">新解锁成就</p>
-                <ul className="mt-1 list-inside list-disc text-xs text-slate-300">
+                <p className="text-xs font-medium text-emerald-800">新解锁成就</p>
+                <ul className="mt-1 list-inside list-disc text-xs text-slate-600">
                   {successSummary.newlyUnlockedAchievements.map((a) => (
                     <li key={a.key}>{a.title}</li>
                   ))}
@@ -357,7 +357,7 @@ export function NewNoteForm({
         <button
           type="submit"
           disabled={loading || submitStage === "success"}
-          className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+          className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-600 disabled:opacity-50"
         >
           {loading
             ? submitStage === "upload"

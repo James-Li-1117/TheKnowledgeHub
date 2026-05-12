@@ -31,26 +31,31 @@ export default async function ChapterDetailPage({
 
   return (
     <div className="space-y-6">
-      <Link href={`/courses/${courseId}`} className="text-sm text-emerald-400 hover:underline">
+      <Link href={`/courses/${courseId}`} className="text-sm font-medium text-emerald-600 hover:underline">
         ← 返回 {chapter.course.code}
       </Link>
-      <h1 className="text-2xl font-bold text-white">{chapter.title}</h1>
-      <p className="text-sm text-slate-400">
+      <h1 className="text-2xl font-bold text-slate-900">{chapter.title}</h1>
+      <p className="text-sm text-slate-600">
         状态：{progress?.completed ? "已完成" : "进行中"} · 掌握度约 {Math.round((progress?.mastery ?? 0) * 100)}%
       </p>
 
       <section>
-        <h2 className="mb-2 text-lg font-semibold text-white">本章笔记</h2>
+        <h2 className="mb-2 text-lg font-semibold text-slate-900">本章笔记</h2>
         {notes.length === 0 ? (
-          <p className="text-slate-500">暂无笔记。</p>
+          <p className="text-slate-600">暂无笔记。</p>
         ) : (
           <ul className="space-y-2">
             {notes.map((n) => (
-              <li key={n.id} className="rounded-xl border border-white/10 bg-slate-900/40 px-4 py-3">
-                <p className="font-medium text-white">{n.title}</p>
-                {n.content && <p className="mt-1 line-clamp-3 text-sm text-slate-400">{n.content}</p>}
+              <li key={n.id} className="rounded-xl border border-slate-200 bg-white/95 px-4 py-3 shadow-sm">
+                <p className="font-medium text-slate-900">{n.title}</p>
+                {n.content && <p className="mt-1 line-clamp-3 text-sm text-slate-600">{n.content}</p>}
                 {n.fileUrl && (
-                  <a href={n.fileUrl} className="mt-2 inline-block text-sm text-emerald-400 hover:underline" target="_blank" rel="noreferrer">
+                  <a
+                    href={n.fileUrl}
+                    className="mt-2 inline-block text-sm font-medium text-emerald-600 hover:underline"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     附件：{n.fileName || "下载"}
                   </a>
                 )}
@@ -60,7 +65,7 @@ export default async function ChapterDetailPage({
         )}
         <Link
           href={`/notes/new?courseId=${courseId}&chapterId=${chapterId}`}
-          className="mt-4 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-sm text-white"
+          className="mt-4 inline-block rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-emerald-600"
         >
           添加笔记
         </Link>

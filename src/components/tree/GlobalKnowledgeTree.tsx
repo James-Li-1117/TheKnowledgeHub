@@ -36,7 +36,7 @@ export function GlobalKnowledgeTree({ courses }: { courses: GlobalCourseStat[] }
   );
 
   return (
-    <div className="h-[520px] w-full overflow-hidden rounded-2xl border border-emerald-500/20 bg-gradient-to-b from-emerald-950/30 via-slate-950 to-slate-950">
+    <div className="h-[520px] w-full overflow-hidden rounded-3xl border border-emerald-200/80 bg-gradient-to-b from-emerald-50 via-white to-sky-50 shadow-inner">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -47,7 +47,7 @@ export function GlobalKnowledgeTree({ courses }: { courses: GlobalCourseStat[] }
         maxZoom={1.25}
         proOptions={{ hideAttribution: true }}
       >
-        <Background gap={22} color="#14532d44" />
+        <Background gap={22} color="#86efac66" />
         <Controls />
       </ReactFlow>
     </div>
@@ -92,7 +92,7 @@ function buildGlobalGraph(courses: GlobalCourseStat[]) {
       id: `${rootId}-${c.id}`,
       source: rootId,
       target: c.id,
-      style: { stroke: `${c.accentColor}66`, strokeWidth: 2 + c.fraction * 3 },
+      style: { stroke: `${c.accentColor}99`, strokeWidth: 2 + c.fraction * 3 },
       animated: c.fraction > 0.2,
       markerEnd: { type: MarkerType.ArrowClosed, color: c.accentColor },
     });
@@ -104,9 +104,9 @@ function buildGlobalGraph(courses: GlobalCourseStat[]) {
 function TrunkNode({ data }: NodeProps) {
   const d = data as { label: string };
   return (
-    <div className="tree-pulse w-[220px] rounded-2xl border border-emerald-400/40 bg-emerald-950/70 px-4 py-3 text-center text-emerald-100 shadow-[0_0_30px_rgba(52,211,153,0.25)]">
-      <div className="text-sm font-semibold tracking-wide">{d.label}</div>
-      <div className="mt-1 text-[11px] text-emerald-200/80">大厦根基 · 枝干生长</div>
+    <div className="tree-pulse w-[220px] rounded-2xl border-2 border-emerald-300 bg-white/95 px-4 py-3 text-center text-slate-800 shadow-lg shadow-emerald-100">
+      <div className="text-sm font-semibold tracking-wide text-emerald-700">{d.label}</div>
+      <div className="mt-1 text-[11px] text-slate-500">可爱枝干 · 一起长大</div>
     </div>
   );
 }
@@ -123,24 +123,23 @@ function CourseTrunkNode({ data }: NodeProps) {
   const scale = 0.85 + d.growth * 0.2;
   return (
     <div
-      className="w-[150px] rounded-xl border px-3 py-2 text-[11px] text-slate-100 shadow-lg backdrop-blur-md transition-transform"
+      className="w-[150px] rounded-2xl border-2 bg-white/95 px-3 py-2 text-[11px] text-slate-800 shadow-md backdrop-blur-sm transition-transform"
       style={{
         transform: `scale(${scale})`,
         borderColor: d.accent,
-        background: `linear-gradient(145deg, color-mix(in oklab, ${d.accent} 28%, transparent), rgba(15,23,42,0.92))`,
-        boxShadow: `0 0 ${12 + d.fraction * 24}px color-mix(in oklab, ${d.accent} 40%, transparent)`,
+        boxShadow: `0 8px 22px color-mix(in oklab, ${d.accent} 22%, transparent)`,
       }}
     >
       <div className="text-xs font-bold" style={{ color: d.accent }}>
         {d.label}
       </div>
-      <div className="mt-1 line-clamp-2 text-[10px] leading-snug text-slate-300">{d.subtitle}</div>
-      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-black/40">
+      <div className="mt-1 line-clamp-2 text-[10px] leading-snug text-slate-600">{d.subtitle}</div>
+      <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100">
         <div
           className="h-full rounded-full transition-all duration-700"
           style={{
             width: `${Math.round(d.fraction * 100)}%`,
-            background: `linear-gradient(90deg, ${d.accent}, #ecfccb)`,
+            background: `linear-gradient(90deg, ${d.accent}, #bbf7d0)`,
           }}
         />
       </div>

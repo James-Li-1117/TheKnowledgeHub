@@ -74,7 +74,7 @@ export function CourseBranchView({ themeKey, accentColor, tree, completedMap, ma
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br ${theme.bgGradient}`}
+      className={`relative overflow-hidden rounded-2xl border border-slate-200/90 bg-gradient-to-br shadow-sm ${theme.bgGradient}`}
     >
       {theme.particle !== "none" && <Particles kind={theme.particle} color={accentColor} />}
       <div style={{ width: "100%", height }} className="min-h-[420px]">
@@ -88,8 +88,8 @@ export function CourseBranchView({ themeKey, accentColor, tree, completedMap, ma
           maxZoom={1.5}
           proOptions={{ hideAttribution: true }}
         >
-          <Background gap={20} color="#33415555" />
-          <MiniMap maskColor="rgb(15,23,42)" />
+          <Background gap={20} color="#cbd5e155" />
+          <MiniMap maskColor="rgb(241,245,249)" className="rounded-lg border border-slate-200" />
           <Controls />
         </ReactFlow>
       </div>
@@ -108,18 +108,15 @@ function ChapterNode({ data }: NodeProps) {
   const radius = d.leafShape === "hex" ? 6 : d.leafShape === "diamond" ? 4 : 14;
   return (
     <div
-      className="w-[168px] border-2 px-3 py-2 text-xs text-slate-100 shadow-lg backdrop-blur-sm"
+      className="w-[168px] border-2 bg-white/95 px-3 py-2 text-xs text-slate-800 shadow-md backdrop-blur-sm"
       style={{
-        borderColor: d.done ? d.accentColor : "rgba(148,163,184,0.35)",
+        borderColor: d.done ? d.accentColor : "rgba(148,163,184,0.55)",
         borderRadius: radius,
-        background: d.done
-          ? `linear-gradient(135deg, color-mix(in oklab, ${d.accentColor} 35%, transparent), rgba(15,23,42,0.92))`
-          : "rgba(15,23,42,0.9)",
-        boxShadow: d.done ? `0 0 20px color-mix(in oklab, ${d.accentColor} 55%, transparent)` : undefined,
+        boxShadow: d.done ? `0 6px 18px color-mix(in oklab, ${d.accentColor} 28%, transparent)` : undefined,
       }}
     >
       <div className="font-medium leading-snug">{d.label}</div>
-      <div className="mt-1 flex items-center justify-between text-[10px] text-slate-400">
+      <div className="mt-1 flex items-center justify-between text-[10px] text-slate-500">
         <span>{d.done ? "已完成" : "进行中"}</span>
         <span>{Math.round(d.mastery * 100)}%</span>
       </div>

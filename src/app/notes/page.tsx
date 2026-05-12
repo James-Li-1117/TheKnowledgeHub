@@ -37,14 +37,17 @@ export default async function NotesListPage({
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-white">我的笔记</h1>
-        <Link href="/notes/new" className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white">
+        <h1 className="text-2xl font-bold text-slate-900">我的笔记</h1>
+        <Link
+          href="/notes/new"
+          className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-emerald-600"
+        >
           上传笔记
         </Link>
       </div>
 
       {createdId && highlightFound ? (
-        <p className="rounded-xl border border-emerald-500/35 bg-emerald-950/30 px-4 py-3 text-sm text-emerald-100/95">
+        <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
           以下高亮条目为你刚刚保存的笔记。
         </p>
       ) : null}

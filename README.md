@@ -1,6 +1,6 @@
 # The Knowledge Hub
 
-Multi-user study notes and a **knowledge tree** progress visualization for summer review (math + physics courses).
+Multi-user study notes, **per-course mind maps** (free child nodes + note “sticky” previews), and a **knowledge tree** progress visualization for summer review (math + physics courses).
 
 ## 本地运行要准备什么
 
