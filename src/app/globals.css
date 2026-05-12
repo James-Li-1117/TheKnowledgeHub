@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  --background: #030712;
+  --foreground: #e2e8f0;
+  --accent: #22c55e;
+}
+
+body {
+  color: var(--foreground);
+  background: radial-gradient(1200px 600px at 20% -10%, #14532d33, transparent),
+    radial-gradient(900px 500px at 90% 10%, #1e3a8a33, transparent), var(--background);
+  min-height: 100vh;
+}
+
+@keyframes growPulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px color-mix(in oklab, var(--accent) 55%, transparent));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px color-mix(in oklab, var(--accent) 85%, transparent));
+  }
+}
+
+.tree-pulse {
+  animation: growPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-18px) scale(1.05);
+    opacity: 0.2;
+  }
+}
+
+.particle {
+  animation: floatParticle 4s ease-in-out infinite;
+}
