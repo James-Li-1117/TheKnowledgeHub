@@ -49,12 +49,20 @@ export default async function HomePage() {
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           {session?.user ? (
-            <Link
-              href="/dashboard"
-              className="rounded-xl bg-emerald-500 px-5 py-2.5 font-medium text-emerald-950 hover:bg-emerald-400"
-            >
-              进入仪表盘
-            </Link>
+            <>
+              <Link
+                href="/dashboard"
+                className="rounded-xl bg-emerald-500 px-5 py-2.5 font-medium text-emerald-950 hover:bg-emerald-400"
+              >
+                进入仪表盘
+              </Link>
+              <Link
+                href="/notes/new"
+                className="rounded-xl border border-emerald-400/50 bg-emerald-500/10 px-5 py-2.5 font-medium text-emerald-200 hover:bg-emerald-500/20"
+              >
+                上传笔记
+              </Link>
+            </>
           ) : (
             <>
               <Link

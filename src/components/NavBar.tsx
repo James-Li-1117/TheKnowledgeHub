@@ -26,8 +26,11 @@ export async function NavBar() {
               <Link className="hover:text-white" href="/notes">
                 笔记
               </Link>
-              <Link className="hover:text-white" href="/notes/new">
-                上传
+              <Link
+                href="/notes/new"
+                className="rounded-md bg-emerald-600 px-3 py-1 font-medium text-white hover:bg-emerald-500"
+              >
+                上传笔记
               </Link>
               <Link className="hover:text-white" href="/study">
                 学习打卡

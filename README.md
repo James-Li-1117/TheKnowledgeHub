@@ -16,6 +16,9 @@ Multi-user study notes and a **knowledge tree** progress visualization for summe
 一键辅助（创建 `.env`、补全 `AUTH_SECRET`）：`npm run setup:local`  
 之后你只需确认 `.env` 里的 `DATABASE_URL` 已是真实连接串。
 
+如果你希望“一条命令直接跑起来”，可用：`npm run start:local`  
+它会自动执行：安装依赖 -> 初始化 `.env` -> `db:push` -> `db:seed` -> 启动开发服务器。
+
 ## Setup
 
 1. `npm install`
@@ -24,6 +27,10 @@ Multi-user study notes and a **knowledge tree** progress visualization for summe
 4. `npm run db:push`（或 `npm run db:migrate`）
 5. `npm run db:seed`
 6. `npm run dev`
+
+或直接：
+
+- `npm run start:local`（自动完成 1~6 的常见流程；若 `DATABASE_URL` 仍是占位值会提示你先填写）
 
 （等价于旧流程：手动 `copy env.example .env` 再填变量。）
 

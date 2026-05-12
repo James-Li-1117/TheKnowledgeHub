@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "start:local": "node scripts/start-local.cjs",
     "lint": "eslint",
     "setup:local": "node scripts/setup-local.cjs",
     "db:generate": "prisma generate",

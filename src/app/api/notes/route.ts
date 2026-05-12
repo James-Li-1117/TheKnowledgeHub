@@ -3,7 +3,7 @@ import { z } from "zod";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { createSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase";
-import { recomputeChapterMastery } from "@/lib/progress";
+import { computeChapterMasteryValue, recomputeChapterMastery } from "@/lib/progress";
 import { evaluateAchievements } from "@/lib/achievements";
 
 export async function GET() {
@@ -96,6 +96,17 @@ export async function POST(req: Request) {
     if (!ch) return NextResponse.json({ error: "Chapter not found" }, { status: 404 });
   }
 
+  let beforeMastery: number | null = null;
+  if (chapterId) {
+    const progressRow = await prisma.chapterProgress.findUnique({
+      where: { userId_chapterId: { userId: session.user.id, chapterId } },
+    });
+    const noteCountBefore = await prisma.note.count({
+      where: { authorId: session.user.id, chapterId },
+    });
+    beforeMastery = computeChapterMasteryValue(progressRow?.completed, noteCountBefore);
+  }
+
   const note = await prisma.note.create({
     data: {
       authorId: session.user.id,
@@ -110,10 +121,33 @@ export async function POST(req: Request) {
     },
   });
 
+  let afterMastery: number | null = null;
   if (chapterId) {
-    await recomputeChapterMastery(session.user.id, chapterId);
+    afterMastery = await recomputeChapterMastery(session.user.id, chapterId);
   }
-  await evaluateAchievements(session.user.id);
+  const { newlyUnlocked } = await evaluateAchievements(session.user.id);
 
-  return NextResponse.json({ note });
+  let newlyUnlockedAchievements: { key: string; title: string }[] = [];
+  if (newlyUnlocked.length > 0) {
+    const rows = await prisma.achievement.findMany({
+      where: { key: { in: newlyUnlocked } },
+      select: { key: true, title: true },
+    });
+    newlyUnlockedAchievements = rows.map((a) => ({ key: a.key, title: a.title }));
+  }
+
+  const uploadSummary = {
+    noteId: note.id,
+    chapterProgress:
+      chapterId && beforeMastery !== null && afterMastery !== null
+        ? {
+            beforeMastery,
+            afterMastery,
+            delta: afterMastery - beforeMastery,
+          }
+        : null,
+    newlyUnlockedAchievements,
+  };
+
+  return NextResponse.json({ note, uploadSummary });
 }

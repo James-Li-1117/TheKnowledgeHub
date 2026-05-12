@@ -18,7 +18,15 @@ export default async function CoursesPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-white">课程</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold text-white">课程</h1>
+        <Link
+          href="/notes/new"
+          className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
+        >
+          快速上传笔记
+        </Link>
+      </div>
       <div className="grid gap-4 md:grid-cols-2">
         {rows.map(({ course: c, progress: p }) => {
           const theme = getCourseTheme(c.themeKey);

@@ -1,5 +1,12 @@
 import prisma from "@/lib/prisma";
 
+/** Mastery 0..1 from completion flag + note count (same formula as recomputeChapterMastery). */
+export function computeChapterMasteryValue(completed: boolean | undefined, noteCount: number): number {
+  const base = completed ? 0.55 : 0.15;
+  const bump = Math.min(0.45, noteCount * 0.12);
+  return Math.min(1, base + bump);
+}
+
 /** Mastery 0..1 from notes + completion */
 export async function recomputeChapterMastery(userId: string, chapterId: string) {
   const progress = await prisma.chapterProgress.findUnique({
@@ -7,9 +14,7 @@ export async function recomputeChapterMastery(userId: string, chapterId: string)
   });
   const noteCount = await prisma.note.count({ where: { authorId: userId, chapterId } });
 
-  const base = progress?.completed ? 0.55 : 0.15;
-  const bump = Math.min(0.45, noteCount * 0.12);
-  const mastery = Math.min(1, base + bump);
+  const mastery = computeChapterMasteryValue(progress?.completed, noteCount);
 
   await prisma.chapterProgress.upsert({
     where: { userId_chapterId: { userId, chapterId } },
