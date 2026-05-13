@@ -9,10 +9,13 @@ export async function GET() {
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const notes = await prisma.note.findMany({
-    where: { authorId: session.user.id },
     orderBy: { updatedAt: "desc" },
-    include: { course: { select: { code: true, title: true } }, chapter: { select: { title: true, slug: true } } },
-    take: 100,
+    include: {
+      author: { select: { id: true, name: true, email: true } },
+      course: { select: { code: true, title: true } },
+      chapter: { select: { title: true, slug: true } },
+    },
+    take: 200,
   });
   return NextResponse.json({ notes });
 }

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
-import { recomputeChapterMastery } from "@/lib/progress";
 
 export default async function ChapterDetailPage({
   params,
@@ -19,14 +18,10 @@ export default async function ChapterDetailPage({
   });
   if (!chapter) notFound();
 
-  await recomputeChapterMastery(session.user.id, chapterId);
-  const progress = await prisma.chapterProgress.findUnique({
-    where: { userId_chapterId: { userId: session.user.id, chapterId } },
-  });
-
   const notes = await prisma.note.findMany({
-    where: { courseId, chapterId, authorId: session.user.id },
+    where: { courseId, chapterId },
     orderBy: { updatedAt: "desc" },
+    include: { author: { select: { id: true, name: true, email: true } } },
   });
 
   return (
@@ -35,9 +30,7 @@ export default async function ChapterDetailPage({
         ← 返回 {chapter.course.code}
       </Link>
       <h1 className="text-2xl font-bold text-slate-900">{chapter.title}</h1>
-      <p className="text-sm text-slate-600">
-        状态：{progress?.completed ? "已完成" : "进行中"} · 掌握度约 {Math.round((progress?.mastery ?? 0) * 100)}%
-      </p>
+      <p className="text-sm text-slate-600">本章所有用户笔记（仅作者可编辑，见笔记列表）。</p>
 
       <section>
         <h2 className="mb-2 text-lg font-semibold text-slate-900">本章笔记</h2>
@@ -48,6 +41,14 @@ export default async function ChapterDetailPage({
             {notes.map((n) => (
               <li key={n.id} className="rounded-xl border border-slate-200 bg-white/95 px-4 py-3 shadow-sm">
                 <p className="font-medium text-slate-900">{n.title}</p>
+                <p className="mt-1 text-xs text-slate-500">
+                  提交者：{n.author.name || n.author.email}
+                  {n.authorId === session.user.id ? (
+                    <span className="ml-2 rounded bg-emerald-100 px-1.5 py-0.5 text-emerald-800">我</span>
+                  ) : (
+                    <span className="ml-2 rounded bg-slate-100 px-1.5 py-0.5 text-slate-600">只读</span>
+                  )}
+                </p>
                 {n.content && <p className="mt-1 line-clamp-3 text-sm text-slate-600">{n.content}</p>}
                 {n.fileUrl && (
                   <a

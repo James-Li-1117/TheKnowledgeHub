@@ -8,8 +8,8 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "The Knowledge Hub — 学习大树",
-  description: "多人学习笔记与知识树进度可视化",
+  title: "The Knowledge Hub",
+  description: "课程思维导图与多人笔记：显示提交者，仅作者可编辑。",
 };
 
 export default function RootLayout({

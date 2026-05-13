@@ -14,11 +14,11 @@ export const authConfig = {
     authorized({ auth, request }) {
       const path = request.nextUrl.pathname;
       const logged = !!auth?.user;
-      const protectedPaths = ["/dashboard", "/courses", "/notes", "/achievements", "/study"];
+      const protectedPaths = ["/courses", "/notes"];
       const isProtected = protectedPaths.some((p) => path.startsWith(p));
       if (isProtected && !logged) return false;
       if ((path === "/login" || path === "/register") && logged) {
-        return Response.redirect(new URL("/dashboard", request.nextUrl));
+        return Response.redirect(new URL("/courses", request.nextUrl));
       }
       return true;
     },

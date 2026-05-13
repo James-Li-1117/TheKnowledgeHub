@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import ReactFlow, {
   Background,
   Controls,
@@ -51,6 +52,7 @@ function depthOf(id: string, byId: Map<string, MindMapNodeDTO>): number {
 }
 
 function MindMapNodeCard({ data, selected }: NodeProps) {
+  const router = useRouter();
   const d = data as {
     nodeId: string;
     title: string;
@@ -63,6 +65,80 @@ function MindMapNodeCard({ data, selected }: NodeProps) {
     onAddChild: (parentId: string) => void;
   };
   const thick = d.isRoot ? 3 : Math.max(1.5, 2.4 - d.depth * 0.35);
+  const hasNote = Boolean(d.linkedNoteId);
+  const hasPreview = Boolean(d.previewImageUrl || d.previewText);
+
+  function openNote(e: React.MouseEvent) {
+    e.stopPropagation();
+    if (d.linkedNoteId) router.push(`/notes/${d.linkedNoteId}`);
+  }
+
+  function stickyShell(clickable: boolean, children: ReactNode) {
+    const inner = (
+      <div className="relative rotate-[-0.8deg] rounded-sm bg-gradient-to-br from-[#fffef6] via-[#fff8dc] to-[#ffefc4] px-1.5 pb-1 pt-2 shadow-[2px_3px_8px_rgba(15,23,42,0.12),inset_0_1px_0_rgba(255,255,255,0.65)] ring-1 ring-amber-200/80 transition group-hover:-translate-y-0.5 group-hover:shadow-[3px_5px_12px_rgba(15,23,42,0.14)]">
+        <div
+          className="pointer-events-none absolute left-1/2 top-0 h-2.5 w-9 -translate-x-1/2 -translate-y-px rounded-sm bg-white/75 shadow-sm ring-1 ring-white/90"
+          aria-hidden
+        />
+        {children}
+      </div>
+    );
+    if (clickable) {
+      return (
+        <button
+          type="button"
+          onClick={openNote}
+          title="点击查看完整笔记与附件"
+          className="group mt-2 w-full cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-1"
+        >
+          {inner}
+          <p className="mt-1 text-center text-[8px] font-semibold uppercase tracking-wide text-emerald-700/90">
+            点击查看
+          </p>
+        </button>
+      );
+    }
+    return <div className="group mt-2 w-full">{inner}</div>;
+  }
+
+  let noteBlock: ReactNode;
+  if (hasNote) {
+    noteBlock = stickyShell(true, (
+      <>
+        {d.previewImageUrl ? (
+          <div className="mt-1 overflow-hidden rounded border border-amber-100/90 bg-white/50">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={d.previewImageUrl} alt="" className="h-[72px] w-full object-cover object-top" />
+          </div>
+        ) : d.previewText ? (
+          <p className="mt-1 line-clamp-4 whitespace-pre-wrap px-0.5 text-[9px] leading-snug text-amber-950/85">
+            {d.previewText}
+          </p>
+        ) : (
+          <p className="mt-1 px-0.5 text-[9px] font-medium text-emerald-800">已绑定笔记</p>
+        )}
+      </>
+    ));
+  } else if (hasPreview) {
+    noteBlock = stickyShell(false, (
+      <>
+        {d.previewImageUrl ? (
+          <div className="mt-1 overflow-hidden rounded border border-amber-100/90 bg-white/50">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={d.previewImageUrl} alt="" className="h-[72px] w-full object-cover object-top" />
+          </div>
+        ) : (
+          <p className="mt-1 line-clamp-4 whitespace-pre-wrap px-0.5 text-[9px] leading-snug text-amber-950/85">
+            {d.previewText}
+          </p>
+        )}
+        <p className="mt-1 text-center text-[8px] text-slate-500">在右侧上传以绑定到节点</p>
+      </>
+    ));
+  } else {
+    noteBlock = <p className="mt-2 text-[10px] text-slate-400">在右侧上传笔记</p>;
+  }
+
   return (
     <div
       className={`relative w-[200px] select-none rounded-2xl border bg-white/95 px-3 pb-2 pt-2 shadow-md ${
@@ -79,20 +155,7 @@ function MindMapNodeCard({ data, selected }: NodeProps) {
 
       <div className="min-w-0">
         <p className="text-[11px] font-semibold leading-snug text-slate-800">{d.title}</p>
-        {d.previewImageUrl ? (
-          <div className="mt-2 overflow-hidden rounded-lg border border-amber-200/80 bg-amber-50/60 shadow-inner">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={d.previewImageUrl} alt="" className="h-[72px] w-full object-cover object-top" />
-          </div>
-        ) : d.previewText ? (
-          <p className="mt-2 line-clamp-3 rounded-lg border border-dashed border-slate-200 bg-slate-50 px-2 py-1.5 text-[10px] leading-relaxed text-slate-600">
-            {d.previewText}
-          </p>
-        ) : d.linkedNoteId ? (
-          <p className="mt-2 text-[10px] text-emerald-600">已绑定笔记</p>
-        ) : (
-          <p className="mt-2 text-[10px] text-slate-400">在右侧上传笔记</p>
-        )}
+        {noteBlock}
       </div>
 
       <button
@@ -252,7 +315,7 @@ export function CourseMindMapView({ courseId, themeKey, accentColor, initialNode
 
       <div className="grid gap-4 lg:grid-cols-[1fr_320px]">
         <p className="text-sm text-slate-600">
-          拖拽节点调整位置；点击节点后在右侧上传笔记。PDF / 图片会尽量生成便利贴预览。
+          拖拽节点调整位置；点击节点后在右侧上传笔记。PDF 首页缩略图 / 图片预览需配置 Supabase Storage；未配置时便签显示文字摘要。已绑定笔记时点击便签可打开笔记详情页查看附件。
           {busy ? <span className="ml-2 text-amber-600">处理中…</span> : null}
         </p>
 
@@ -359,7 +422,9 @@ function AttachNotePanel({
           />
         </div>
         <div>
-          <label className="text-[11px] text-slate-500">附件（PDF / 图片优先显示预览）</label>
+          <label className="text-[11px] text-slate-500">
+            附件（PDF / 图片；配置 Supabase 后可云端保存并生成便签缩略图）
+          </label>
           <input
             type="file"
             className="mt-0.5 w-full text-xs text-slate-600"

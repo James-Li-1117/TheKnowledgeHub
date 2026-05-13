@@ -1,6 +1,6 @@
 # The Knowledge Hub
 
-Multi-user study notes, **per-course mind maps** (free child nodes + note “sticky” previews), and a **knowledge tree** progress visualization for summer review (math + physics courses).
+多用户 **课程思维导图**（自由子节点 + 节点绑定笔记与预览）与 **笔记上传**；登录用户可查看全部笔记及**提交者**，**仅作者可编辑**自己的笔记。
 
 ## 本地运行要准备什么
 
@@ -34,21 +34,21 @@ Multi-user study notes, **per-course mind maps** (free child nodes + note “sti
 
 （等价于旧流程：手动 `copy env.example .env` 再填变量。）
 
-## Supabase storage (optional)
+## Supabase storage（可选）
 
-Create a bucket named `notes` (or set `SUPABASE_STORAGE_BUCKET`). Add URL and keys to `.env`. Without Supabase, file uploads store metadata only (you can paste URLs manually later).
+创建名为 `notes` 的 bucket（或设置 `SUPABASE_STORAGE_BUCKET`），在 `.env` 中填写 URL 与密钥。未配置时附件仅保存占位元数据；思维导图节点仍可生成文字类预览。
 
-## Deploy (Vercel + Supabase)
+## Deploy（Vercel + Supabase）
 
-- Create a Supabase project: Postgres + Storage bucket `notes`.
-- Set env vars on Vercel from `env.example`.
-- Run migrations: `npx prisma migrate deploy` in CI or locally against production DB.
+- 创建 Supabase 项目：Postgres + Storage bucket `notes`。
+- 在 Vercel 上从 `env.example` 同步环境变量。
+- 在 CI 或本地对生产库执行：`npx prisma migrate deploy`（或 `db push` 视你的流程而定）。
 
 ## Scripts
 
 | Script | Description |
 |--------|-------------|
-| `npm run dev` | Dev server |
-| `npm run build` | Production build |
+| `npm run dev` | 开发服务器 |
+| `npm run build` | 生产构建 |
 | `npm run setup:local` | 创建 `.env`、生成 `AUTH_SECRET`、提示填写 `DATABASE_URL` |
 | `npm run db:reset-local` | `db:push` 后立刻 `db:seed`（本地开发省事） |

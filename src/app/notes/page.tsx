@@ -15,12 +15,13 @@ export default async function NotesListPage({
   const createdId = sp.created?.trim() || null;
 
   const notes = await prisma.note.findMany({
-    where: { authorId: session.user.id },
     orderBy: { updatedAt: "desc" },
     include: {
+      author: { select: { id: true, name: true, email: true } },
       course: { select: { code: true, id: true } },
       chapter: { select: { title: true, id: true } },
     },
+    take: 200,
   });
 
   const listPayload = notes.map((n) => ({
@@ -28,6 +29,8 @@ export default async function NotesListPage({
     title: n.title,
     content: n.content,
     tags: n.tags,
+    authorId: n.authorId,
+    author: { name: n.author.name, email: n.author.email },
     course: n.course,
     chapter: n.chapter,
   }));
@@ -37,7 +40,7 @@ export default async function NotesListPage({
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-slate-900">我的笔记</h1>
+        <h1 className="text-2xl font-bold text-slate-900">全部笔记</h1>
         <Link
           href="/notes/new"
           className="rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-emerald-600"
@@ -62,7 +65,7 @@ export default async function NotesListPage({
         </p>
       ) : null}
 
-      <NotesListClient notes={listPayload} createdId={createdId} />
+      <NotesListClient notes={listPayload} currentUserId={session.user.id} createdId={createdId} />
     </div>
   );
 }

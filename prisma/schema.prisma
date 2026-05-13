@@ -54,14 +54,10 @@ model User {
   image         String?
   passwordHash  String?
 
-  accounts            Account[]
-  sessions            Session[]
-  notes               Note[]
-  studyLogs           StudyLog[]
-  chapterProgress     ChapterProgress[]
-  userAchievements    UserAchievement[]
-  progressSnapshots   ProgressSnapshot[]
-  mindMapNodes        MindMapNode[]
+  accounts     Account[]
+  sessions     Session[]
+  notes        Note[]
+  mindMapNodes MindMapNode[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -77,7 +73,6 @@ model Course {
 
   chapters     Chapter[]
   notes        Note[]
-  studyLogs    StudyLog[]
   mindMapNodes MindMapNode[]
 
   createdAt DateTime @default(now())
@@ -96,9 +91,7 @@ model Chapter {
   slug  String
   order Int @default(0)
 
-  notes             Note[]
-  chapterProgress   ChapterProgress[]
-  studyLogs         StudyLog[]
+  notes Note[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -161,67 +154,4 @@ model MindMapNode {
 
   @@index([courseId, authorId])
   @@index([parentId])
-}
-
-model StudyLog {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  courseId  String?
-  course    Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
-  chapterId String?
-  chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: SetNull)
-  minutes   Int      @default(0)
-  note      String?
-  studiedAt DateTime @default(now())
-
-  @@index([userId, studiedAt])
-}
-
-model ChapterProgress {
-  id        String  @id @default(cuid())
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  chapterId String
-  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-
-  completed Boolean @default(false)
-  mastery   Float   @default(0)
-
-  updatedAt DateTime @updatedAt
-
-  @@unique([userId, chapterId])
-}
-
-model ProgressSnapshot {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  label  String?
-  data   Json
-
-  createdAt DateTime @default(now())
-
-  @@index([userId, createdAt])
-}
-
-model Achievement {
-  id          String @id @default(cuid())
-  key         String @unique
-  title       String
-  description String?
-
-  userAchievements UserAchievement[]
-}
-
-model UserAchievement {
-  id            String @id @default(cuid())
-  userId        String
-  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  achievementId String
-  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
-
-  earnedAt DateTime @default(now())
-
-  @@unique([userId, achievementId])
 }

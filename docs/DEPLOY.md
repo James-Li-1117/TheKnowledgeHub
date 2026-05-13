@@ -4,7 +4,7 @@
 
 1. Create a project at [supabase.com](https://supabase.com).
 2. **SQL**: run `npx prisma db push` or migrations against the Supabase Postgres connection string (Settings → Database → URI).
-3. **Storage**: create a public or signed bucket named `notes` (or set `SUPABASE_STORAGE_BUCKET` in env).
+3. **Storage**: create a public bucket named `notes` (or set `SUPABASE_STORAGE_BUCKET` in env to match). For public read + `getPublicUrl` used by this app, run [`supabase-storage-notes.sql`](./supabase-storage-notes.sql) in the SQL Editor after the bucket exists (or let the script create the bucket row).
 4. Copy **Project URL**, **anon key**, and **service role key** (server only).
 
 ## 2. Environment variables
@@ -22,12 +22,14 @@ Set on Vercel (and locally in `.env`):
 | `SUPABASE_SERVICE_ROLE_KEY` | service role (never expose to client) |
 | `SUPABASE_STORAGE_BUCKET` | default `notes` |
 
+After changing env vars locally, **restart** the dev server. Notes that were uploaded while Storage was unset keep `fileUrl` like `local:...` until you **re-upload** the attachment (or replace URLs in the database manually).
+
 ## 3. Build & migrate
 
 ```bash
 npm install
 npx prisma migrate deploy   # or db push for prototyping
-npm run db:seed             # seed courses (re-run clears app data except users)
+npm run db:seed             # 重新写入课程章节（会清空课程、章节、笔记、思维导图节点；不删用户）
 npm run build
 ```
 

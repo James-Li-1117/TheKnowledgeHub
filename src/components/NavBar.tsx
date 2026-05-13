@@ -9,7 +9,7 @@ export async function NavBar() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight text-emerald-600">
           <span className="tree-pulse inline-block h-3 w-3 rounded-full bg-emerald-400" />
-          学习大树
+          The Knowledge Hub
         </Link>
         <nav className="flex flex-wrap items-center gap-3 text-sm text-slate-600">
           <Link className="rounded-md px-1 py-0.5 hover:bg-pink-50 hover:text-slate-900" href="/">
@@ -17,9 +17,6 @@ export async function NavBar() {
           </Link>
           {session?.user ? (
             <>
-              <Link className="rounded-md px-1 py-0.5 hover:bg-pink-50 hover:text-slate-900" href="/dashboard">
-                仪表盘
-              </Link>
               <Link className="rounded-md px-1 py-0.5 hover:bg-pink-50 hover:text-slate-900" href="/courses">
                 课程
               </Link>
@@ -31,12 +28,6 @@ export async function NavBar() {
                 className="rounded-full bg-emerald-500 px-3 py-1 font-medium text-white shadow-sm hover:bg-emerald-600"
               >
                 上传笔记
-              </Link>
-              <Link className="rounded-md px-1 py-0.5 hover:bg-pink-50 hover:text-slate-900" href="/study">
-                学习打卡
-              </Link>
-              <Link className="rounded-md px-1 py-0.5 hover:bg-pink-50 hover:text-slate-900" href="/achievements">
-                成就
               </Link>
               <span className="text-slate-300">|</span>
               <span className="max-w-[140px] truncate text-slate-500">{session.user.email}</span>

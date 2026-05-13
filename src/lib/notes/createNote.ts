@@ -1,7 +1,5 @@
 import prisma from "@/lib/prisma";
 import { createSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase";
-import { computeChapterMasteryValue, recomputeChapterMastery } from "@/lib/progress";
-import { evaluateAchievements } from "@/lib/achievements";
 
 export type CreateNoteInput = {
   authorId: string;
@@ -30,12 +28,6 @@ export type CreateNoteResult = {
   };
   uploadSummary: {
     noteId: string;
-    chapterProgress: {
-      beforeMastery: number;
-      afterMastery: number;
-      delta: number;
-    } | null;
-    newlyUnlockedAchievements: { key: string; title: string }[];
   };
 };
 
@@ -88,17 +80,6 @@ export async function createNoteWithUpload(input: CreateNoteInput): Promise<
     if (!ch) return { ok: false, status: 404, error: "Chapter not found" };
   }
 
-  let beforeMastery: number | null = null;
-  if (chapterId) {
-    const progressRow = await prisma.chapterProgress.findUnique({
-      where: { userId_chapterId: { userId: authorId, chapterId } },
-    });
-    const noteCountBefore = await prisma.note.count({
-      where: { authorId, chapterId },
-    });
-    beforeMastery = computeChapterMasteryValue(progressRow?.completed, noteCountBefore);
-  }
-
   const note = await prisma.note.create({
     data: {
       authorId,
@@ -113,33 +94,11 @@ export async function createNoteWithUpload(input: CreateNoteInput): Promise<
     },
   });
 
-  let afterMastery: number | null = null;
-  if (chapterId) {
-    afterMastery = await recomputeChapterMastery(authorId, chapterId);
-  }
-  const { newlyUnlocked } = await evaluateAchievements(authorId);
-
-  let newlyUnlockedAchievements: { key: string; title: string }[] = [];
-  if (newlyUnlocked.length > 0) {
-    const rows = await prisma.achievement.findMany({
-      where: { key: { in: newlyUnlocked } },
-      select: { key: true, title: true },
-    });
-    newlyUnlockedAchievements = rows.map((a) => ({ key: a.key, title: a.title }));
-  }
-
-  const uploadSummary = {
-    noteId: note.id,
-    chapterProgress:
-      chapterId && beforeMastery !== null && afterMastery !== null
-        ? {
-            beforeMastery,
-            afterMastery,
-            delta: afterMastery - beforeMastery,
-          }
-        : null,
-    newlyUnlockedAchievements,
+  return {
+    ok: true,
+    data: {
+      note,
+      uploadSummary: { noteId: note.id },
+    },
   };
-
-  return { ok: true, data: { note, uploadSummary } };
 }

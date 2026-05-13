@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 
 function LoginForm() {
   const search = useSearchParams();
-  const callbackUrl = search.get("callbackUrl") || "/dashboard";
+  const callbackUrl = search.get("callbackUrl") || "/courses";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);

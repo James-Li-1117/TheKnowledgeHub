@@ -25,22 +25,38 @@ const COURSES: CourseSeed[] = [
     accentColor: "#2563eb",
     sortOrder: 1,
     tree: [
-      { title: "Vectors & geometry", slug: "vectors", children: [
-        { title: "Dot & cross product", slug: "dot-cross" },
-        { title: "Lines & planes", slug: "lines-planes" },
-      ]},
-      { title: "Partial derivatives", slug: "partials", children: [
-        { title: "Chain rule", slug: "chain" },
-        { title: "Tangent planes", slug: "tangent-planes" },
-      ]},
-      { title: "Multiple integrals", slug: "integrals", children: [
-        { title: "Polar & cylindrical", slug: "polar-cyl" },
-        { title: "Spherical coords", slug: "spherical" },
-      ]},
-      { title: "Vector fields", slug: "vector-fields", children: [
-        { title: "Line integrals", slug: "line-int" },
-        { title: "Green's theorem", slug: "green" },
-      ]},
+      {
+        title: "Vectors & geometry",
+        slug: "vectors",
+        children: [
+          { title: "Dot & cross product", slug: "dot-cross" },
+          { title: "Lines & planes", slug: "lines-planes" },
+        ],
+      },
+      {
+        title: "Partial derivatives",
+        slug: "partials",
+        children: [
+          { title: "Chain rule", slug: "chain" },
+          { title: "Tangent planes", slug: "tangent-planes" },
+        ],
+      },
+      {
+        title: "Multiple integrals",
+        slug: "integrals",
+        children: [
+          { title: "Polar & cylindrical", slug: "polar-cyl" },
+          { title: "Spherical coords", slug: "spherical" },
+        ],
+      },
+      {
+        title: "Vector fields",
+        slug: "vector-fields",
+        children: [
+          { title: "Line integrals", slug: "line-int" },
+          { title: "Green's theorem", slug: "green" },
+        ],
+      },
     ],
   },
   {
@@ -50,18 +66,30 @@ const COURSES: CourseSeed[] = [
     accentColor: "#7c3aed",
     sortOrder: 2,
     tree: [
-      { title: "First-order ODEs", slug: "first-order", children: [
-        { title: "Separable equations", slug: "separable" },
-        { title: "Integrating factors", slug: "integrating-factors" },
-      ]},
-      { title: "Linear systems", slug: "linear-systems", children: [
-        { title: "Eigenmethods", slug: "eigen" },
-        { title: "Phase portraits", slug: "phase" },
-      ]},
-      { title: "Higher-order linear", slug: "higher-order", children: [
-        { title: "Undetermined coefficients", slug: "undetermined" },
-        { title: "Variation of parameters", slug: "variation" },
-      ]},
+      {
+        title: "First-order ODEs",
+        slug: "first-order",
+        children: [
+          { title: "Separable equations", slug: "separable" },
+          { title: "Integrating factors", slug: "integrating-factors" },
+        ],
+      },
+      {
+        title: "Linear systems",
+        slug: "linear-systems",
+        children: [
+          { title: "Eigenmethods", slug: "eigen" },
+          { title: "Phase portraits", slug: "phase" },
+        ],
+      },
+      {
+        title: "Higher-order linear",
+        slug: "higher-order",
+        children: [
+          { title: "Undetermined coefficients", slug: "undetermined" },
+          { title: "Variation of parameters", slug: "variation" },
+        ],
+      },
     ],
   },
   {
@@ -71,18 +99,30 @@ const COURSES: CourseSeed[] = [
     accentColor: "#db2777",
     sortOrder: 3,
     tree: [
-      { title: "Vector spaces", slug: "vector-spaces", children: [
-        { title: "Subspaces & bases", slug: "bases" },
-        { title: "Dimension", slug: "dimension" },
-      ]},
-      { title: "Linear maps", slug: "linear-maps", children: [
-        { title: "Matrices", slug: "matrices" },
-        { title: "Rank-nullity", slug: "rank-nullity" },
-      ]},
-      { title: "Eigenvalues", slug: "eigenvalues", children: [
-        { title: "Diagonalization", slug: "diagonalization" },
-        { title: "Inner products", slug: "inner-products" },
-      ]},
+      {
+        title: "Vector spaces",
+        slug: "vector-spaces",
+        children: [
+          { title: "Subspaces & bases", slug: "bases" },
+          { title: "Dimension", slug: "dimension" },
+        ],
+      },
+      {
+        title: "Linear maps",
+        slug: "linear-maps",
+        children: [
+          { title: "Matrices", slug: "matrices" },
+          { title: "Rank-nullity", slug: "rank-nullity" },
+        ],
+      },
+      {
+        title: "Eigenvalues",
+        slug: "eigenvalues",
+        children: [
+          { title: "Diagonalization", slug: "diagonalization" },
+          { title: "Inner products", slug: "inner-products" },
+        ],
+      },
     ],
   },
   {
@@ -92,17 +132,27 @@ const COURSES: CourseSeed[] = [
     accentColor: "#0891b2",
     sortOrder: 4,
     tree: [
-      { title: "Classification & models", slug: "models", children: [
-        { title: "Heat equation", slug: "heat" },
-        { title: "Wave equation", slug: "wave-eq" },
-      ]},
-      { title: "Separation of variables", slug: "separation", children: [
-        { title: "Fourier series", slug: "fourier" },
-        { title: "Sturm–Liouville", slug: "sturm-liouville" },
-      ]},
-      { title: "Green's functions", slug: "greens", children: [
-        { title: "Fundamental solutions", slug: "fundamental" },
-      ]},
+      {
+        title: "Classification & models",
+        slug: "models",
+        children: [
+          { title: "Heat equation", slug: "heat" },
+          { title: "Wave equation", slug: "wave-eq" },
+        ],
+      },
+      {
+        title: "Separation of variables",
+        slug: "separation",
+        children: [
+          { title: "Fourier series", slug: "fourier" },
+          { title: "Sturm–Liouville", slug: "sturm-liouville" },
+        ],
+      },
+      {
+        title: "Green's functions",
+        slug: "greens",
+        children: [{ title: "Fundamental solutions", slug: "fundamental" }],
+      },
     ],
   },
   {
@@ -112,17 +162,27 @@ const COURSES: CourseSeed[] = [
     accentColor: "#ca8a04",
     sortOrder: 5,
     tree: [
-      { title: "Kinematics", slug: "kinematics", children: [
-        { title: "1D motion", slug: "1d-motion" },
-        { title: "Projectile motion", slug: "projectile" },
-      ]},
-      { title: "Newton's laws", slug: "newton", children: [
-        { title: "Free-body diagrams", slug: "fbd" },
-        { title: "Friction", slug: "friction" },
-      ]},
-      { title: "Work & energy", slug: "energy", children: [
-        { title: "Conservation", slug: "conservation" },
-      ]},
+      {
+        title: "Kinematics",
+        slug: "kinematics",
+        children: [
+          { title: "1D motion", slug: "1d-motion" },
+          { title: "Projectile motion", slug: "projectile" },
+        ],
+      },
+      {
+        title: "Newton's laws",
+        slug: "newton",
+        children: [
+          { title: "Free-body diagrams", slug: "fbd" },
+          { title: "Friction", slug: "friction" },
+        ],
+      },
+      {
+        title: "Work & energy",
+        slug: "energy",
+        children: [{ title: "Conservation", slug: "conservation" }],
+      },
     ],
   },
   {
@@ -132,17 +192,27 @@ const COURSES: CourseSeed[] = [
     accentColor: "#ea580c",
     sortOrder: 6,
     tree: [
-      { title: "Electrostatics", slug: "electrostatics", children: [
-        { title: "Coulomb & fields", slug: "coulomb" },
-        { title: "Gauss's law", slug: "gauss" },
-      ]},
-      { title: "Potential & capacitance", slug: "potential-cap", children: [
-        { title: "Conductors", slug: "conductors" },
-      ]},
-      { title: "Magnetostatics", slug: "magnetostatics", children: [
-        { title: "Ampère's law", slug: "ampere" },
-        { title: "Induction", slug: "induction" },
-      ]},
+      {
+        title: "Electrostatics",
+        slug: "electrostatics",
+        children: [
+          { title: "Coulomb & fields", slug: "coulomb" },
+          { title: "Gauss's law", slug: "gauss" },
+        ],
+      },
+      {
+        title: "Potential & capacitance",
+        slug: "potential-cap",
+        children: [{ title: "Conductors", slug: "conductors" }],
+      },
+      {
+        title: "Magnetostatics",
+        slug: "magnetostatics",
+        children: [
+          { title: "Ampère's law", slug: "ampere" },
+          { title: "Induction", slug: "induction" },
+        ],
+      },
     ],
   },
   {
@@ -152,17 +222,27 @@ const COURSES: CourseSeed[] = [
     accentColor: "#0d9488",
     sortOrder: 7,
     tree: [
-      { title: "Oscillations", slug: "oscillations", children: [
-        { title: "SHM & damped motion", slug: "shm" },
-      ]},
-      { title: "Waves", slug: "waves", children: [
-        { title: "Superposition", slug: "superposition" },
-        { title: "Standing waves", slug: "standing" },
-      ]},
-      { title: "Optics", slug: "optics", children: [
-        { title: "Interference", slug: "interference" },
-        { title: "Diffraction", slug: "diffraction" },
-      ]},
+      {
+        title: "Oscillations",
+        slug: "oscillations",
+        children: [{ title: "SHM & damped motion", slug: "shm" }],
+      },
+      {
+        title: "Waves",
+        slug: "waves",
+        children: [
+          { title: "Superposition", slug: "superposition" },
+          { title: "Standing waves", slug: "standing" },
+        ],
+      },
+      {
+        title: "Optics",
+        slug: "optics",
+        children: [
+          { title: "Interference", slug: "interference" },
+          { title: "Diffraction", slug: "diffraction" },
+        ],
+      },
     ],
   },
   {
@@ -172,16 +252,24 @@ const COURSES: CourseSeed[] = [
     accentColor: "#9333ea",
     sortOrder: 8,
     tree: [
-      { title: "Special relativity", slug: "relativity", children: [
-        { title: "Lorentz transforms", slug: "lorentz" },
-      ]},
-      { title: "Quantum intro", slug: "quantum-intro", children: [
-        { title: "Photoelectric effect", slug: "photoelectric" },
-        { title: "Bohr model", slug: "bohr" },
-      ]},
-      { title: "Matter waves", slug: "matter-waves", children: [
-        { title: "Schrödinger basics", slug: "schrodinger" },
-      ]},
+      {
+        title: "Special relativity",
+        slug: "relativity",
+        children: [{ title: "Lorentz transforms", slug: "lorentz" }],
+      },
+      {
+        title: "Quantum intro",
+        slug: "quantum-intro",
+        children: [
+          { title: "Photoelectric effect", slug: "photoelectric" },
+          { title: "Bohr model", slug: "bohr" },
+        ],
+      },
+      {
+        title: "Matter waves",
+        slug: "matter-waves",
+        children: [{ title: "Schrödinger basics", slug: "schrodinger" }],
+      },
     ],
   },
   {
@@ -191,17 +279,27 @@ const COURSES: CourseSeed[] = [
     accentColor: "#dc2626",
     sortOrder: 9,
     tree: [
-      { title: "Boundary value problems", slug: "bvp", children: [
-        { title: "Method of images", slug: "images" },
-        { title: "Separation in Cartesian", slug: "sep-cart" },
-      ]},
-      { title: "Multipole expansion", slug: "multipole", children: [
-        { title: "Dipole fields", slug: "dipole" },
-      ]},
-      { title: "Maxwell equations", slug: "maxwell-eq", children: [
-        { title: "Potentials & gauges", slug: "gauges" },
-        { title: "Radiation intro", slug: "radiation" },
-      ]},
+      {
+        title: "Boundary value problems",
+        slug: "bvp",
+        children: [
+          { title: "Method of images", slug: "images" },
+          { title: "Separation in Cartesian", slug: "sep-cart" },
+        ],
+      },
+      {
+        title: "Multipole expansion",
+        slug: "multipole",
+        children: [{ title: "Dipole fields", slug: "dipole" }],
+      },
+      {
+        title: "Maxwell equations",
+        slug: "maxwell-eq",
+        children: [
+          { title: "Potentials & gauges", slug: "gauges" },
+          { title: "Radiation intro", slug: "radiation" },
+        ],
+      },
     ],
   },
 ];
@@ -230,11 +328,6 @@ async function seedChapters(
 }
 
 async function main() {
-  await prisma.userAchievement.deleteMany();
-  await prisma.achievement.deleteMany();
-  await prisma.progressSnapshot.deleteMany();
-  await prisma.chapterProgress.deleteMany();
-  await prisma.studyLog.deleteMany();
   await prisma.mindMapNode.deleteMany();
   await prisma.note.deleteMany();
   await prisma.chapter.deleteMany();
@@ -251,18 +344,6 @@ async function main() {
       },
     });
     await seedChapters(course.id, c.tree, null, 0);
-  }
-
-  const achievements = [
-    { key: "first_note", title: "First leaf", description: "Upload your first note." },
-    { key: "streak_7", title: "Steady growth", description: "Study on 7 distinct days." },
-    { key: "chapters_10", title: "Branching out", description: "Mark 10 chapters complete." },
-    { key: "course_canopy", title: "Course canopy", description: "Complete every chapter in one course." },
-    { key: "forest_friend", title: "Forest friend", description: "Log 500 total study minutes." },
-  ];
-
-  for (const a of achievements) {
-    await prisma.achievement.create({ data: a });
   }
 
   console.log("Seed complete:", COURSES.length, "courses");

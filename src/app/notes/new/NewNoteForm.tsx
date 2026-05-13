@@ -14,12 +14,6 @@ type CourseOpt = {
 
 export type UploadSummary = {
   noteId: string;
-  chapterProgress: {
-    beforeMastery: number;
-    afterMastery: number;
-    delta: number;
-  } | null;
-  newlyUnlockedAchievements: { key: string; title: string }[];
 };
 
 type SubmitStage = "idle" | "validate" | "upload" | "save" | "success";
@@ -245,9 +239,7 @@ export function NewNoteForm({
             ))}
           </select>
           {!chapterId ? (
-            <p className="mt-1.5 text-xs text-amber-700">
-              未选章节时笔记仍会保存，但不会更新章节掌握度。
-            </p>
+            <p className="mt-1.5 text-xs text-slate-500">未选章节时笔记仍会保存到课程下。</p>
           ) : null}
         </div>
         <div>
@@ -325,31 +317,7 @@ export function NewNoteForm({
         {successSummary && submitStage === "success" ? (
           <div className="space-y-2 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950">
             <p className="font-semibold text-emerald-800">保存成功</p>
-            {successSummary.chapterProgress ? (
-              <p className="text-xs text-slate-600">
-                章节掌握度：{Math.round(successSummary.chapterProgress.beforeMastery * 100)}% →{" "}
-                {Math.round(successSummary.chapterProgress.afterMastery * 100)}%
-                {successSummary.chapterProgress.delta !== 0 ? (
-                  <span className="text-emerald-700">
-                    {" "}
-                    （{successSummary.chapterProgress.delta > 0 ? "+" : ""}
-                    {Math.round(successSummary.chapterProgress.delta * 100)}%）
-                  </span>
-                ) : null}
-              </p>
-            ) : (
-              <p className="text-xs text-slate-600">本次未绑定章节，掌握度未更新。</p>
-            )}
-            {successSummary.newlyUnlockedAchievements.length > 0 ? (
-              <div>
-                <p className="text-xs font-medium text-emerald-800">新解锁成就</p>
-                <ul className="mt-1 list-inside list-disc text-xs text-slate-600">
-                  {successSummary.newlyUnlockedAchievements.map((a) => (
-                    <li key={a.key}>{a.title}</li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
+            <p className="text-xs text-slate-600">笔记已保存。</p>
             <p className="text-xs text-slate-500">即将跳转到笔记列表…</p>
           </div>
         ) : null}
